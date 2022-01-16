@@ -1,7 +1,22 @@
 import React, { useRef, useEffect } from "react";
+import InputManager from './InputManager.js';
 
 const ReactRogue = ({ width, height, tilesize }) => {
   const canvasRef = React.useRef();
+  let inputManager = new InputManager();
+    const handleInput = (action,data) => {
+        console.log(`handle input: ${action}: ${JSON.stringify(data)}`);
+    }
+    useEffect(()=> {
+        console.log('Bind input');
+        inputManager.bindKeys();
+        inputManager.subscribe(handleInput);
+        return () => {
+            inputManager.unbindKeys();
+            inputManager.unsubscribe(handleInput);
+        }
+    })
+
   useEffect(() => {
     console.log("draw to canvas");
     const ctx = canvasRef.current.getContext('2d');
